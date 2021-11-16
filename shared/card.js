@@ -5,7 +5,7 @@ export default function card(props){
     return(
         <View>
            <Image 
-                source={props.itemImage}
+                source={{uri: props.itemImage}}
                 style={styles.image}
            /> 
            <View style={styles.cardFooter}>

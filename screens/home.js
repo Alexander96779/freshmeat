@@ -1,16 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from 'react-native';
 import Footer from '../shared/footer';
 import Card from '../shared/card';
+import { useDispatch, useSelector, shallowEqual} from 'react-redux';
+import { viewProducts } from '../store/modules/AllProducts/actions';
 
 export default function home ({ navigation }) {
+     const dispatch = useDispatch();
+     const productList = useSelector(state => state.getAllProducts, shallowEqual);
+     let products = [];
+     products = productList.payload.data;
 
-    const [ categories, setCategories] = useState([
-        {key: '1', title: 'Fresh Meat', description: 'Flesh cow meat with no bones.', avatar: require('../assets/inyama.png')},
-        {key: '2', title: 'Bone Meat', description: 'Flesh cow meat with bones.', avatar: require('../assets/imvange.jpg')},
-        {key: '3', title: 'Chicken', description: 'Whole chicken meat.', avatar: require('../assets/inkoko.png')},
-        {key: '4', title: 'Fish', description: 'Fresh fish (Fillet/Tilapia).', avatar: require('../assets/ifi.png')}
-    ]);
+     useEffect(() =>{
+         dispatch(viewProducts());     
+     }, [dispatch]);
 
     return(
         <ImageBackground
@@ -19,18 +22,20 @@ export default function home ({ navigation }) {
         >
         <View style={styles.overlayContainer}>
             <View style={styles.menuContainer}>
-                {
-                    categories.map((category) =>{
+                {   products && products.length > 0 ?
+                    products.map((product) =>{
                         return(
                     <TouchableOpacity 
-                    onPress={() => navigation.navigate('ItemOrder', category)}
-                    style={styles.menuItem}>
-                    <Card itemImage={category.avatar} key={category.key}>
-                        <Text style={styles.titleText}>{category.title}</Text>
+                    onPress={() => navigation.navigate('ItemOrder', product)}
+                    style={styles.menuItem}
+                    key={product.id}>
+                    <Card itemImage={product.img_url}>
+                        <Text style={styles.titleText}>{product.title}</Text>
                     </Card>  
                     </TouchableOpacity> 
                         )
                     })
+                    : null
                 }
             </View>
         </View>
@@ -38,6 +43,7 @@ export default function home ({ navigation }) {
         </ImageBackground>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
