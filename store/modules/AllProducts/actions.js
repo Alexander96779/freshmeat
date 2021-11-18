@@ -32,7 +32,6 @@ export const viewProducts = () => async(dispatch) =>{
         const response = await API.get(`api/v1/products`, config);
         dispatch(apiSuccess(response.data));
     } catch (error) {
-        console.log(error.response);
         dispatch(apiError(error.response));
     }
 }
