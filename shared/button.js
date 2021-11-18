@@ -17,7 +17,8 @@ marginTop: 20,
 paddingVertical: 14,
 paddingHorizontal: 10,
 backgroundColor: '#1db2c9',
-margin: 15
+margin: 5,
+borderRadius: 6
 },
 buttonText: {
 color: 'white',
